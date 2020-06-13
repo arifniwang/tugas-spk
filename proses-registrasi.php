@@ -61,15 +61,15 @@ try {
 	$mail->isSMTP();
 	$mail->Host = 'smtp.googlemail.com';
 	$mail->SMTPAuth = true;
-	$mail->Username = 'arif.niwank1@gmail.com';
-	$mail->Password = 'kucintakau_66';
+	$mail->Username = 'emailmu@gmail.com';
+	$mail->Password = 'passwordemailmu';
 	$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 	$mail->Port = 465;
 	
 	//Recipients
-	$mail->setFrom('arif.niwank1@gmail.com', 'Energi Bangsa');
+	$mail->setFrom('emailmu', 'Energi Bangsa');
 	$mail->addAddress($email);
-	$mail->addReplyTo('arif.niwank1@gmail.com', 'Energi Bangsa');
+	$mail->addReplyTo('emailmu', 'Energi Bangsa');
 	
 	// Content
 	$mail->isHTML(true);

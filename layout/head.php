@@ -12,6 +12,7 @@
 <!-- DataTables -->
 <link rel="stylesheet" type="text/css" href="assets/dataTables.bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="assets/buttons.bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="assets/sweetalert2.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="lte/dist/css/AdminLTE.min.css">
 <!-- AdminLTE Skins. Choose a skin from the css/skins

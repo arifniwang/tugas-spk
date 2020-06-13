@@ -60,7 +60,7 @@ $menu = 'user';
 										echo "<tr>";
 										echo "<td>" . $i . ".</td>";
 										echo "<td><a class='fancybox-effects-d' href='./" . $row['foto'] . "' title='" . $row['nama'] . "'>
-										<img src='./" . $row['foto'] . "' height=35 /></a></td>";
+										<img src='./" . ($row['foto'] != '' ? $row['foto'] : '/assets/image/user.jpg') . "' height=35 /></a></td>";
 										echo "<td>" . $row['user'] . "</td>";
 										echo "<td>" . date('d-m-Y', strtotime($row['since'])) . "</td>";
 										echo '<td><div class="btn-group">';

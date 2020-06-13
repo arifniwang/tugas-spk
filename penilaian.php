@@ -5,7 +5,7 @@ if (!isset($_SESSION['login'])) header('Location: login-ui.php');
 $menu = 'penilaian';
 
 //data karyawan
-$sql = "SELECT * FROM `karyawan`";
+$sql = "SELECT * FROM `karyawan` WHERE `status` = 'Aktif'";
 $karyawan = $mysqli->query($sql);
 
 function ket($input)
@@ -16,6 +16,7 @@ function ket($input)
 	if ($input >= 60 && $input <= 79) return "<small class='label label-primary'>Baik</small>";
 	if ($input >= 80 && $input <= 100) return "<small class='label label-success'>Sangat Baik</small>";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -67,7 +68,6 @@ function ket($input)
 											echo "<th>K" . $no++ . "</th>";
 										}
 									}; ?>
-									<th>Opsi</th>
 								</tr>
 								</thead>
 								<tbody>
@@ -84,13 +84,10 @@ function ket($input)
 										while ($xrow = $kriteria->fetch_assoc()) {
 											$sql = "SELECT * FROM `nilai` WHERE `id_karyawan` = " . $row['id_karyawan'] . " AND `id_kriteria` = " . $xrow['id_kriteria'];
 											$result = $mysqli->query($sql)->fetch_assoc();
-											echo "<td>" . ket($result['nilai']) . "</td>";
+											$nilai = ($result['nilai'] * $xrow['bobot']) / 100;
+											$nilai = round($nilai, 4);
+											echo "<td>" . $nilai . "</td>";
 										}
-										echo '<td><div class="btn-group">';
-										echo '<a href="edit-penilaian.php?id=' . $row['id_karyawan'] . '" class="fa fa-edit btn btn-info btn-sm"></a>'; ?>
-										<?php
-										echo '</div>
-										  </td>';
 										echo "</tr>";
 										$i++;
 									}

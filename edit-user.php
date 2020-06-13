@@ -51,9 +51,11 @@ $data = $result->fetch_assoc();
 								<div class="form-group">
 									<label for="foto" class="col-sm-2 control-label">Foto</label>
 									<div class="col-sm-6">
-										<a class='fancybox-effects-d' href="<?php echo './' . $data['foto'] ?>" title="<?php echo $data['nama'] ?>">
-											<img src="<?php echo './' . $data['foto'] ?>" alt="<?php echo $data['nama'] ?>" height="150px">
-										</a>
+										<?php if ($data['foto'] != ''): ?>
+											<a class='fancybox-effects-d' href="<?php echo './' . $data['foto'] ?>" title="<?php echo $data['nama'] ?>">
+												<img src="<?php echo './' . $data['foto'] ?>" alt="<?php echo $data['nama'] ?>" height="150px">
+											</a>
+										<?php endif; ?>
 										<input type="file" class="form-control" name="foto" id="foto" style="margin-top: 15px;"/>
 										<small>Kosongkan jika tidak ingin mengganti foto</small>
 									</div>

@@ -6,7 +6,7 @@ $menu = 'hasil';
 
 //data karyawan
 $karyawan = [];
-$sql = "SELECT * FROM `karyawan`";
+$sql = "SELECT * FROM `karyawan` WHERE `status` = 'Aktif'";
 $data_karyawan = $mysqli->query($sql);
 while ($row = $data_karyawan->fetch_assoc()) {
 	$karyawan[] = $row;
@@ -85,7 +85,7 @@ $list_max = [];
 							<td style="text-align: center;vertical-align: middle;"><b>Cost / Benefit</b></td>
 							<?php
 							foreach ($kriteria as $key => $row) {
-								echo "<td>" . ucfirst($row['cost_benefit']) . "</td>";
+								echo "<td>" . ucfirst($row['cost_benefit']) . " (" . $row['bobot'] . ")" . "</td>";
 							}
 							?>
 						</tr>
@@ -159,7 +159,7 @@ $list_max = [];
 								<td><b><?php echo $row['nama'] ?></b></td>
 								<?php
 								foreach ($row['nilai'] as $xkey => $xrow) {
-									echo "<td>" . $xrow['nilai'] . "</td>";
+									echo "<td>" . ($xrow['bobot_sub'] * 100) . "</td>";
 								}
 								?>
 							</tr>
@@ -186,19 +186,21 @@ $list_max = [];
 						<tr>
 							<td><b>Nilai Minimal</b></td>
 							<?php foreach ($kriteria as $key => $row) {
-								$sql = "SELECT MIN(`nilai`) as min FROM `nilai` WHERE `id_kriteria` = " . $row['id_kriteria'];
+								$sql = "SELECT MIN(`bobot_sub`) as min FROM `nilai` JOIN `karyawan` on `karyawan`.`id_karyawan` = `nilai`.`id_karyawan`
+								WHERE `nilai`.`id_kriteria` = " . $row['id_kriteria'] . " AND `karyawan`.`status` = 'Aktif'";
 								$min = $mysqli->query($sql)->fetch_assoc()['min'];
 								$kriteria[$key]['min'] = $min;
-								echo "<td>" . $min . "</td>";
+								echo "<td>" . ($min * 100) . "</td>";
 							} ?>
 						</tr>
 						<tr>
 							<td><b>Nilai Maximal</b></td>
 							<?php foreach ($kriteria as $key => $row) {
-								$sql = "SELECT MAX(`nilai`) as max FROM `nilai` WHERE `id_kriteria` = " . $row['id_kriteria'];
+								$sql = "SELECT MAX(`bobot_sub`) as max FROM `nilai` JOIN `karyawan` on `karyawan`.`id_karyawan` = `nilai`.`id_karyawan`
+								WHERE `nilai`.`id_kriteria` = " . $row['id_kriteria'] . " AND `karyawan`.`status` = 'Aktif'";
 								$max = $mysqli->query($sql)->fetch_assoc()['max'];
 								$kriteria[$key]['max'] = $max;
-								echo "<td>" . $max . "</td>";
+								echo "<td>" . ($max * 100) . "</td>";
 							} ?>
 						</tr>
 						</tbody>
@@ -227,6 +229,7 @@ $list_max = [];
 								<?php
 								foreach ($row['nilai'] as $xkey => $xrow) {
 									$cost_benefit = '';
+									$nilai = $xrow['bobot_sub'] * 100;
 									$min = 0;
 									$max = 0;
 									
@@ -234,16 +237,16 @@ $list_max = [];
 									foreach ($kriteria as $yrow) {
 										if ($yrow['id_kriteria'] == $xrow['id_kriteria']) {
 											$cost_benefit = $yrow['cost_benefit'];
-											$min = $yrow['min'];
-											$max = $yrow['max'];
+											$min = $yrow['min'] * 100;
+											$max = $yrow['max'] * 100;
 										}
 									}
 									
 									//calculate
 									if ($cost_benefit === 'benefit') {
-										$nilai = $xrow['nilai'] / $max;
+										$nilai = $nilai / $max;
 									} else {
-										$nilai = $xrow['nilai'] / $min;
+										$nilai = $nilai / $min;
 									}
 									$karyawan[$key]['nilai'][$xkey]['normalisasi'] = $nilai;
 									echo "<td>" . round($nilai, 4) . "</td>";
@@ -285,8 +288,12 @@ $list_max = [];
 								}
 								$karyawan[$key]['hasil_akhir'] = $hasil_akhir;
 								
+								//update nilai
+								$sql = "UPDATE `karyawan` SET `nilai` = '" . $hasil_akhir . "' WHERE `id_karyawan` = " . $row['id_karyawan'];
+								$mysqli->query($sql);
+								
 								//find pemenang
-								if ($nilai_pemenang < $hasil_akhir){
+								if ($nilai_pemenang < $hasil_akhir) {
 									$nilai_pemenang = $hasil_akhir;
 									$pemenang = $row['nama'];
 								}
@@ -318,13 +325,13 @@ $list_max = [];
 					</table><!--./ Hasil Akhir-->
 					
 					
-					<!--Hasil Akhir-->
+					<!--Hasil Analisa-->
 					<hr>
 					<p class="text-center"><b>Hasil Analisa</b></p>
 					<p class="text-center">
 						Hasil analisa diurutkan berdasarkan hasil nilai tertinggi.<br>
 						Dapat disimpulkan bahwa Alternatif Karyawan terbaik untuk diangkat sebagai pegawai tetap adalah
-						<b><?php echo $pemenang;?></b> dengan nilai <b><?php echo $nilai_pemenang;?></b>.
+						<b><?php echo $pemenang; ?></b> dengan nilai <b><?php echo $nilai_pemenang; ?></b>.
 					</p>
 					<table class="table table-striped table-bordered table-hover">
 						<thead>
@@ -336,18 +343,17 @@ $list_max = [];
 						</thead>
 						<tbody>
 						<?php
-						asort($karyawan, function($a, $b) {
-							return $a['hasil_akhir'] - $b['hasil_akhir'];
-						});
-						foreach ($karyawan as $key => $row): ?>
+						$sql = 'SELECT * FROM `karyawan` WHERE `status` = "Aktif" ORDER BY `nilai` DESC';
+						$sort = $mysqli->query($sql);
+						foreach ($sort as $key => $row): ?>
 							<tr>
 								<td><?php echo($key + 1) ?>.</td>
 								<td><b><?php echo $row['nama'] ?></b></td>
-								<td><?php echo $row['hasil_akhir']; ?></td>
+								<td><?php echo $row['nilai']; ?></td>
 							</tr>
 						<?php endforeach; ?>
 						</tbody>
-					</table><!--./ Hasil Akhir-->
+					</table><!--./ Hasil Analisa-->
 				
 				
 				</div><!-- /.box-body -->

@@ -29,6 +29,14 @@ $alamat = $_POST['alamat'];
 $jenis_kelamin = $_POST['jenis_kelamin'];
 $foto = $helper->uploadImage('foto');
 $foto = ($foto == '' ? $data->foto : $foto);
+$ijasah = $helper->uploadFile('ijasah');
+$ijasah = ($ijasah == '' ? $data->ijasah : $ijasah);
+$ktp = $helper->uploadFile('ktp');
+$ktp = ($ktp == '' ? $data->ktp : $ktp);
+$cv = $helper->uploadFile('cv');
+$cv = ($cv == '' ? $data->cv : $cv);
+$sertifikat = $helper->uploadFile('sertifikat');
+$sertifikat = ($sertifikat == '' ? $data->sertifikat : $sertifikat);
 $password = ($_POST['password'] == '' ? $data->password : md5($_POST['password']));
 $sub_kriteria = $_POST['sub_kriteria'];
 
@@ -48,7 +56,11 @@ $sql = "UPDATE `karyawan` SET
 `nomor_telepon` = '" . $nomor_telepon . "',
 `alamat` = '" . $alamat . "',
 `jenis_kelamin` = '" . $jenis_kelamin . "',
-`password` = '" . $password . "'
+`password` = '" . $password . "',
+`cv` = '" . $cv . "',
+`ktp` = '" . $ktp . "',
+`ijasah` = '" . $ijasah . "',
+`sertifikat` = '" . $sertifikat . "'
 WHERE `id_karyawan` = $id";
 $mysqli->query($sql);
 
@@ -57,6 +69,7 @@ foreach ($sub_kriteria as $id_kriteria => $value) {
 	$sql = 'SELECT * FROM kriteria WHERE id_kriteria=' . $id_kriteria;
 	$data = $mysqli->query($sql)->fetch_assoc();
 	$limit = $data['limit'];
+	$bobot_kriteria = $data['bobot'];
 	
 	// nilai
 	$sql = "SELECT * FROM nilai WHERE id_karyawan = " . $id . " AND id_kriteria = " . $id_kriteria;
@@ -68,12 +81,14 @@ foreach ($sub_kriteria as $id_kriteria => $value) {
 			$sql = 'SELECT * FROM sub_kriteria WHERE id_sub_kriteria=' . $value;
 			$sub_data = $mysqli->query($sql)->fetch_assoc();
 			$id_sub_kriteria = $sub_data['id_sub_kriteria'];
-			$bobot = $sub_data['bobot'];
+			$bobot_sub = $sub_data['bobot'];
+			$nilai = $bobot_kriteria * $bobot_sub;
+			$nilai = round($nilai, 4);
 			$value = $sub_data['sub_kriteria'];
 			
 			//inset data
-			$sql = "INSERT INTO nilai (`id_nilai`,`id_karyawan`,`id_kriteria`,`id_sub_kriteria`,`bobot`,`value`) VALUES
-		(NULL,$id_karyawan,$id_kriteria,$id_sub_kriteria,$bobot,'" . $value . "')";
+			$sql = "INSERT INTO nilai (`id_nilai`,`id_karyawan`,`id_kriteria`,`id_sub_kriteria`,`value`,`bobot`,`bobot_sub`,`niali`) VALUES
+		(NULL,$id_karyawan,$id_kriteria,$id_sub_kriteria,'" . $value . "',$bobot,$bobot_sub,$nilai)";
 			$sub_data = $mysqli->query($sql);
 			
 		} else {
@@ -85,11 +100,13 @@ foreach ($sub_kriteria as $id_kriteria => $value) {
 				$sub_data = $mysqli->query($sql)->fetch_assoc();
 			}
 			$id_sub_kriteria = $sub_data['id_sub_kriteria'];
-			$bobot = $sub_data['bobot'];
+			$bobot_sub = $sub_data['bobot'];
+			$nilai = $bobot_kriteria * $bobot_sub;
+			$nilai = round($nilai, 4);
 			
 			//inset data
-			$sql = "INSERT INTO nilai (`id_nilai`,`id_karyawan`,`id_kriteria`,`id_sub_kriteria`,`bobot`,`value`) VALUES
-			(NULL,$id_karyawan,$id_kriteria,$id_sub_kriteria,$bobot,'" . $value . "')";
+			$sql = "INSERT INTO nilai (`id_nilai`,`id_karyawan`,`id_kriteria`,`id_sub_kriteria`,`value`,`bobot`,`bobot_sub`,`niali`) VALUES
+		(NULL,$id_karyawan,$id_kriteria,$id_sub_kriteria,'" . $value . "',$bobot,$bobot_sub,$nilai)";
 			$mysqli->query($sql);
 		}
 	} else {
@@ -99,13 +116,17 @@ foreach ($sub_kriteria as $id_kriteria => $value) {
 			$sql = 'SELECT * FROM sub_kriteria WHERE id_sub_kriteria=' . $value;
 			$sub_data = $mysqli->query($sql)->fetch_assoc();
 			$id_sub_kriteria = $sub_data['id_sub_kriteria'];
-			$bobot = $sub_data['bobot'];
+			$bobot_sub = $sub_data['bobot'];
+			$nilai = $bobot_kriteria * $bobot_sub;
+			$nilai = round($nilai, 4);
 			$value = $sub_data['sub_kriteria'];
 			
 			//update data
 			$sql = "UPDATE `nilai` SET
 			`id_sub_kriteria` = '" . $id_sub_kriteria . "',
-			`bobot` = '" . $bobot . "',
+			`bobot` = '" . $bobot_kriteria . "',
+			`bobot_sub` = '" . $bobot_sub . "',
+			`nilai` = '" . $nilai . "',
 			`value` = '" . $value . "'
 			WHERE `id_karyawan` = $id AND `id_kriteria` = $id_kriteria";
 			$mysqli->query($sql);
@@ -118,12 +139,16 @@ foreach ($sub_kriteria as $id_kriteria => $value) {
 				$sub_data = $mysqli->query($sql)->fetch_assoc();
 			}
 			$id_sub_kriteria = $sub_data['id_sub_kriteria'];
-			$bobot = $sub_data['bobot'];
+			$bobot_sub = $sub_data['bobot'];
+			$nilai = $bobot_kriteria * $bobot_sub;
+			$nilai = round($nilai, 4);
 			
 			//update data
 			$sql = "UPDATE `nilai` SET
 			`id_sub_kriteria` = '" . $id_sub_kriteria . "',
-			`bobot` = '" . $bobot . "',
+			`bobot` = '" . $bobot_kriteria . "',
+			`bobot_sub` = '" . $bobot_sub . "',
+			`nilai` = '" . $nilai . "',
 			`value` = '" . $value . "'
 			WHERE `id_karyawan` = $id AND `id_kriteria` = $id_kriteria";
 			$mysqli->query($sql);

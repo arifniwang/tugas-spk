@@ -15,7 +15,7 @@
 <script src="lte/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="lte/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
+<script src="assets/sweetalert2.js"></script>
 
 <?php if (isset($_GET['message'])): ?>
 	<script>

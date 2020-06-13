@@ -1,6 +1,6 @@
-[] saat register hanya nama & email password + kirim email
-[] tambah input file (scan ijasah, ktp, cv, dan sertifikat bila ada)
-[] bobot kriteria (pendidikan 0.2, usia 0.15, pengalaman 0.25, tinggi badan 0.15, inisiatif 0.25)
-[] data penilaian kriteria ditampilkan sesuai sub kriteria
-[] nama pt atm diganti energi bangsa
-[] buat halaman landing page
+[x] saat register hanya nama & email password + kirim email
+[x] tambah input file (scan ijasah, ktp, cv, dan sertifikat bila ada) => format pdf
+[x] bobot kriteria (pendidikan 0.2, usia 0.15, pengalaman 0.25, tinggi badan 0.15, inisiatif 0.25)
+[x] data penilaian kriteria ditampilkan sesuai sub kriteria
+[x] nama pt atm diganti energi bangsa
+[x] buat halaman landing page

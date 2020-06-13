@@ -54,14 +54,14 @@ $menu = 'karyawan';
 								</thead>
 								<tbody>
 								<?php
-								$result = $mysqli->query("select * from karyawan");
+								$result = $mysqli->query("SELECT * FROM `karyawan` WHERE `status` = 'Aktif'");
 								$i = 1;
 								if ($result->num_rows != 0) {
 									while ($row = $result->fetch_assoc()) {
 										echo "<tr>";
 										echo "<td>" . $i . ".</td>";
 										echo "<td><a class='fancybox-effects-d' href='./" . $row['foto'] . "' title='" . $row['nama'] . "'>
-										<img src='./" . $row['foto'] . "' height=35 /></a></td>";
+										<img src='./" . ($row['foto'] != '' ? $row['foto'] : '/assets/image/user.jpg') . "' height=35 /></a></td>";
 										echo "<td>" . ucwords($row['nama']) . "</td>";
 										echo "<td><a href='mailto:" . $row['email'] . "' target='_blank'>" . $row['email'] . "</a></td>";
 										echo "<td><a href='tel:" . $row['nomor_telepon'] . "' target='_blank'>" . ucwords($row['nomor_telepon']) . "</a></td>";

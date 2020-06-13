@@ -13,8 +13,7 @@ include 'dbconf.php';
 <body class="hold-transition login-page">
 <div class="login-box">
 	<div class="login-logo">
-		
-		<a href="#"><b><?php echo $_SESSION['judul']; ?></b> SYSTEM</a>
+		<a href="index.php"><b>ENERGI</b> BANGSA</a>
 	</div>
 	<!-- /.login-logo -->
 	<div class="login-box-body">
@@ -54,30 +53,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 		$karyawan = $mysqli->query("SELECT * FROM `karyawan` WHERE `email` = '" . $_POST['user'] . "' and `password` = '" . md5($_POST['pass']) . "'");
 		if ($user->num_rows != 0) {
 			while ($row = $user->fetch_assoc()) {
+				$login = true;
 				$_SESSION['login'] = uniqid();
 				$_SESSION['id'] = $row['id'];
 				$_SESSION['user'] = $row['user'];
 				$_SESSION['pass'] = $row['pass'];
 				$_SESSION['level'] = 'admin';
 				$_SESSION['since'] = $row['since'];
-				$_SESSION['foto'] = $row['foto'];
+				$_SESSION['foto'] = ($row['foto'] == '' ? 'assets/image/user.jpg' : $row['foto']);
 			} ?>
 			<script>
 				location.href = "dashboard-ui.php";
 			</script>
 		<?php } elseif ($karyawan->num_rows != 0) {
+		$login = false;
 		while ($row = $karyawan->fetch_assoc()) {
-			$_SESSION['login'] = uniqid();
-			$_SESSION['id'] = $row['id_karyawan'];
-			$_SESSION['user'] = $row['nama'];
-			$_SESSION['pass'] = $row['password'];
-			$_SESSION['level'] = 'karyawan';
-			$_SESSION['since'] = '';
-			$_SESSION['foto'] = $row['foto'];
+			if ($row['status'] === 'Aktif') {
+				$login = true;
+				$_SESSION['login'] = uniqid();
+				$_SESSION['id'] = $row['id_karyawan'];
+				$_SESSION['user'] = $row['nama'];
+				$_SESSION['pass'] = $row['password'];
+				$_SESSION['level'] = 'karyawan';
+				$_SESSION['since'] = '';
+				$_SESSION['foto'] = ($row['foto'] == '' ? 'assets/image/user.jpg' : $row['foto']);
+			}
 		} ?>
+		<?php if (!$login): ?>
+			<script>
+				swal({
+					title: 'Login Gagal!',
+					text: 'Akun anda belum teraktivasi, silahkan periksa email anda untuk malkukan aktivasi.',
+					type: 'error',
+					confirmButtonText: 'OK'
+				})
+			</script>
+		<?php else: ?>
 			<script>
 				location.href = "dashboard-ui.php";
 			</script>
+		<?php endif; ?>
+		
 		<?php } else { ?>
 			<script>
 				swal({

@@ -52,7 +52,7 @@ $id = $_SESSION['id'];
 										<h3>
 											<font color="white">
 												<?php
-												$result = $mysqli->query("select * from karyawan");
+												$result = $mysqli->query("select * from karyawan where status = 'Aktif'");
 												echo $result->num_rows;
 												?>
 											</font>

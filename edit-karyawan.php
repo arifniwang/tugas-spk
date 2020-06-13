@@ -56,9 +56,11 @@ $data = $result->fetch_assoc();
 								<div class="form-group">
 									<label for="foto" class="col-sm-2 control-label">Foto</label>
 									<div class="col-sm-6">
+										<?php if($data['foto'] != ''): ?>
 										<a class='fancybox-effects-d' href="<?php echo './' . $data['foto'] ?>" title="<?php echo $data['nama'] ?>">
 											<img src="<?php echo './' . $data['foto'] ?>" alt="<?php echo $data['nama'] ?>" height="150px">
 										</a>
+										<?php endif; ?>
 										<input type="file" class="form-control" name="foto" id="foto" style="margin-top: 15px;"/>
 										<small>Kosongkan jika tidak ingin mengganti foto</small>
 									</div>
@@ -108,6 +110,69 @@ $data = $result->fetch_assoc();
 											<option value='laki-laki' <?php if ($data['jenis_kelamin'] == 'laki-laki') echo 'selected'; ?>>Laki-laki</option>
 											<option value='perempuan' <?php if ($data['jenis_kelamin'] == 'perempuan') echo 'selected'; ?>>Perempuan</option>
 										</select>
+									</div>
+								</div>
+								
+								<hr>
+								
+								<div class="form-group">
+									<label for="foto" class="col-sm-2 control-label">
+										Scan Ijasah <?php echo ($data['ijasah'] == '' ? '<span class="text-red">*</span>' : '') ?>
+									</label>
+									<div class="col-sm-6">
+										<?php if($data['ijasah'] != ''): ?>
+											<a href="<?php echo './'.$data['ijasah']; ?>" target="_blank" class="btn btn-info btn-sm">
+												<i class="fa fa-eye"></i> Lihat Dokumen
+											</a>
+										<?php endif; ?>
+										<input type="file" class="form-control" name="ijasah" id="ijasah" style="margin-top: 15px;" accept=".pdf"
+											<?php echo ($data['ijasah'] == '' ? 'required' : '') ?>/>
+										<small>Hanya bisa menggunakan format file .pdf</small>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="foto" class="col-sm-2 control-label">
+										Scan KTP <?php echo ($data['ktp'] == '' ? '<span class="text-red">*</span>' : '') ?>
+									</label>
+									<div class="col-sm-6">
+										<?php if($data['ktp'] != ''): ?>
+											<a href="<?php echo './'.$data['ktp']; ?>" target="_blank" class="btn btn-info btn-sm">
+												<i class="fa fa-eye"></i> Lihat Dokumen
+											</a>
+										<?php endif; ?>
+										<input type="file" class="form-control" name="ktp" id="ktp" style="margin-top: 15px;" accept=".pdf"
+											<?php echo ($data['ktp'] == '' ? 'required' : '') ?>/>
+										<small>Hanya bisa menggunakan format file .pdf</small>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="foto" class="col-sm-2 control-label">
+										Scan CV <?php echo ($data['cv'] == '' ? '<span class="text-red">*</span>' : '') ?>
+									</label>
+									<div class="col-sm-6">
+										<?php if($data['cv'] != ''): ?>
+											<a href="<?php echo './'.$data['cv']; ?>" target="_blank" class="btn btn-info btn-sm">
+												<i class="fa fa-eye"></i> Lihat Dokumen
+											</a>
+										<?php endif; ?>
+										<input type="file" class="form-control" name="cv" id="cv" style="margin-top: 15px;" accept=".pdf"
+											<?php echo ($data['cv'] == '' ? 'required' : '') ?>/>
+										<small>Hanya bisa menggunakan format file .pdf</small>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label for="foto" class="col-sm-2 control-label">Sertifikat Tambahan</label>
+									<div class="col-sm-6">
+										<?php if($data['sertifikat'] != ''): ?>
+											<a href="<?php echo './'.$data['sertifikat']; ?>" target="_blank" class="btn btn-info btn-sm">
+												<i class="fa fa-eye"></i> Lihat Dokumen
+											</a>
+										<?php endif; ?>
+										<input type="file" class="form-control" name="sertifikat" id="sertifikat" style="margin-top: 15px;" />
+										<small>Hanya bisa menggunakan format file .pdf</small>
 									</div>
 								</div>
 								

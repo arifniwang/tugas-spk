@@ -61,15 +61,15 @@ try {
 	$mail->isSMTP();
 	$mail->Host = 'smtp.googlemail.com';
 	$mail->SMTPAuth = true;
-	$mail->Username = 'emailmu@gmail.com';
-	$mail->Password = 'passwordemailmu';
+	$mail->Username = 'hisom.mukhlas@gmail.com';
+	$mail->Password = '40Bismillah1000';
 	$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 	$mail->Port = 465;
 	
 	//Recipients
-	$mail->setFrom('emailmu', 'Energi Bangsa');
+	$mail->setFrom('hisom.mukhlas@gmail.com', 'Energi Bangsa');
+	$mail->addReplyTo('hisom.mukhlas@gmail.com', 'Energi Bangsa');
 	$mail->addAddress($email);
-	$mail->addReplyTo('emailmu', 'Energi Bangsa');
 	
 	// Content
 	$mail->isHTML(true);
@@ -78,7 +78,7 @@ try {
 	<h2>Registrasi Berhasil</h2>
 	<p>Terimakasih telah melakukan pendaftaran Karyawan pada PT Energi Bangsa.</p>
 	<p>Silahkan klik link dibawah ini untuk Aktivasi akun anda.</p>
-	<a href="http://' . $_SERVER[HTTP_HOST] . '/ptatm/aktivasi.php?key=' . base64_encode($id_karyawan) . '" style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">Aktivasi</a></center>';
+	<a href="http://' . $_SERVER[HTTP_HOST] . '/energibangsa/aktivasi.php?key=' . base64_encode($id_karyawan) . '" style="background-color: #4CAF50;border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;display: inline-block;font-size: 16px;">Aktivasi</a></center>';
 
 	$mail->send();
 } catch (Exception $e) {

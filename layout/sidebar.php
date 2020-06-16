@@ -37,11 +37,6 @@
 					<i class="fa fa-users"></i> <span>Data Karyawan</span>
 				</a>
 			</li>
-			<li <?php if ($menu == 'penilaian'): ?> class="active" <?php endif; ?> >
-				<a href="penilaian.php">
-					<i class="fa fa-list"></i> <span>Data Penilaian</span>
-				</a>
-			</li>
 			<li <?php if ($menu == 'user'): ?> class="active" <?php endif; ?> >
 				<a href="user.php">
 					<i class="fa fa-user"></i> <span>Data User</span>

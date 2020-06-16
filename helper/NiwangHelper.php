@@ -23,7 +23,7 @@ class NiwangHelper
 			return null;
 		} elseif (file_exists($target_file)) { // exist file not uploaded
 			return $target_file;
-		} elseif ($_FILES[$name]["size"] > 500000) { //validate size
+		} elseif ($_FILES[$name]["size"] > 5000000) { //validate size
 			return null;
 		} elseif (!in_array($imageFileType, ['jpg', 'png', 'jpeg', 'gif'])) { //validate extension
 			return null;
@@ -49,7 +49,7 @@ class NiwangHelper
 			return null;
 		} elseif (file_exists($target_file)) { // exist file not uploaded
 			return $target_file;
-		} elseif ($_FILES[$name]["size"] > 500000) { //validate size
+		} elseif ($_FILES[$name]["size"] > 5000000) { //validate size
 			return null;
 		} elseif (!in_array($imageFileType, ['pdf'])) { //validate extension
 			return null;
